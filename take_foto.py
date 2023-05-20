@@ -3,7 +3,7 @@ from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
 import os
 import config
-
+ 
 def normalize_image(image):
     # Converitr la image a escala de grisos
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -26,15 +26,34 @@ def reg_face(img, list_results, ruta):
             cv2.imwrite(ruta, face_reg)
             #Plotejem les cares
             pyplot.imshow(data[y1:y2, x1:x2])
+            pyplot.close()
         pyplot.show(block=False)
         pyplot.close()
+
+    
 def take(user):
     # Capturar cara
+    
     cap = cv2.VideoCapture(0)
+    print("despres")
     while True:
         ret,frame = cap.read()
+        #frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+        # Perque surti el requadre a la pantalla
+        """ data = frame
+        pixels = frame
+        detector = MTCNN()
+        list_results = detector.detect_faces(pixels)
+        # per cada cara
+        for i in range(len(list_results)):
+            x, y, ample, alçada = list_results[i]['box']
+            #face_reg = data[y1:y2, x1:x2]
+            pt1 = (x, y)
+            pt2 = (x+ample, y+alçada)
+            cv2.rectangle(frame, pt1, pt2, (0,255,0), 2) """
+        
         cv2.imshow('FaceID',frame)
-        if cv2.waitKey(1) == 32:
+        if cv2.waitKey(1) == 32 and user != "login":
             llista = os.listdir(config.files_path+"\\"+user)
             if len(llista) == 0:
                 ruta = config.files_path+"\\"+user+"\\"+'1.jpg'

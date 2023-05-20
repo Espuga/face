@@ -1,5 +1,5 @@
 from tkinter import *
-import cv2
+import cv2 
 from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
 import take_foto
@@ -7,7 +7,8 @@ import config
 import os
 
 def login():
-    cv2.imwrite(config.files_path+"\\log\\"+user_entry2.get()+'_LOG.jpg', take_foto.take())
+    #print("abans take_foto.take")
+    cv2.imwrite(config.files_path+"\\log\\"+user_entry2.get()+'_LOG.jpg', take_foto.take('login'))
     def reg_face(img, list_results):
         data = pyplot.imread(img)
         for i in range(len(list_results)):
@@ -50,7 +51,7 @@ def login():
             similar = orb_sim(face_reg, face_log)
             print("Compatibility", image.split(".")[0]+": " + str(round(similar, 2)))
             if similar >= 0.9:
-                Label(screen2, text="Log In SUCCESFULLY", fg="green", font=("Calibri",11)).pack()
+                Label(screen2, text="Log In SUCCESFULLY\n Compatibility: "+str(round(similar*100, 4))+"%", fg="green", font=("Calibri",11)).pack()
                 print("Welcome into the system")
                 break
         else:

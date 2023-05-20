@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import * 
 import cv2
 from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
