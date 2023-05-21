@@ -8,7 +8,7 @@ import os
 
 def login():
     #print("abans take_foto.take")
-    cv2.imwrite(config.files_path+"\\log\\"+user_entry2.get()+'_LOG.jpg', take_foto.take('login'))
+    cv2.imwrite(config.files_path+"\\current\\"+user_entry2.get()+'_LOG.jpg', take_foto.take(user_entry2.get(), "login"))
     def reg_face(img, list_results):
         data = pyplot.imread(img)
         for i in range(len(list_results)):
@@ -20,12 +20,12 @@ def login():
             pyplot.axis('off')
             face_reg = data[y1:y2, x1:x2]
             face_reg = cv2.resize(face_reg, (150,200), interpolation=cv2.INTER_CUBIC)   # Guardar la imatge 
-            cv2.imwrite(config.files_path+"\\log\\"+user_entry2.get()+'_LOG.jpg', face_reg)
+            cv2.imwrite(config.files_path+"\\current\\"+user_entry2.get()+'_LOG.jpg', face_reg)
             #Plotejem les cares
             pyplot.imshow(data[y1:y2, x1:x2])
         pyplot.show(block=False)
         pyplot.close()
-    img = config.files_path+"\\log\\"+user_entry2.get()+"_LOG.jpg"
+    img = config.files_path+"\\current\\"+user_entry2.get()+"_LOG.jpg"
     pixels = pyplot.imread(img)
     detector = MTCNN()
     faces = detector.detect_faces(pixels)
@@ -44,14 +44,14 @@ def login():
     # Importar les imatges i cridar a la funció de comparacio
     im_files = os.listdir(os.path.join(os.getcwd(), 'fotos'))     # Llistar els arxius de la carpeta fotos
     if user_entry2.get() in im_files:
-        face_log = cv2.imread(config.files_path+"\\log\\"+user_entry2.get()+"_LOG.jpg",0)
+        face_log = cv2.imread(config.files_path+"\\current\\"+user_entry2.get()+"_LOG.jpg",0)
         for image in os.listdir(config.files_path+"\\"+user_entry2.get()):
             print("====================")
             face_reg = cv2.imread(config.files_path+"\\"+user_entry2.get()+"\\"+image.split(".")[0]+".jpg",0)
             similar = orb_sim(face_reg, face_log)
             print("Compatibility", image.split(".")[0]+": " + str(round(similar, 2)))
             if similar >= 0.9:
-                Label(screen2, text="Log In SUCCESFULLY\n Compatibility: "+str(round(similar*100, 4))+"%", fg="green", font=("Calibri",11)).pack()
+                Label(screen2, text="Log In SUCCESFULLY\n Compatibility: "+str(round(similar*100, 2))+"%", fg="green", font=("Calibri",11)).pack()
                 print("Welcome into the system")
                 break
         else:
@@ -60,7 +60,7 @@ def login():
     else:
         print("User not found")
         Label(screen2, text="User not found", fg="red", font=("Calibri",11)).pack()
-    os.remove(config.files_path+"\\log\\"+user_entry2.get()+"_LOG.jpg")
+    os.remove(config.files_path+"\\current\\"+user_entry2.get()+"_LOG.jpg")
 
 
 def main_window():

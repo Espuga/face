@@ -19,7 +19,7 @@ def sign_in():
         ruta = config.files_path+"\\"+user_entry.get()+"\\"+'1.jpg'
     else:
         ruta = config.files_path+"\\"+user_entry.get()+"\\"+str(int(llista[len(llista)-1].split(".")[0])+1)+'.jpg'
-    cv2.imwrite(ruta, take_foto.take(user_entry.get()))
+    cv2.imwrite(ruta, take_foto.take(user_entry.get(), "register"))
     def reg_face(img, list_results):
         data = pyplot.imread(img)
         for i in range(len(list_results)):
