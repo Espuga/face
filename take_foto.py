@@ -2,7 +2,7 @@ import cv2
 from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
 import os
-import config
+from config import files_path
  
 def normalize_image(image):
     # Converitr la image a escala de grisos
@@ -33,7 +33,8 @@ def reg_face(img, list_results, ruta):
 
 
 def take(user, from_):
-    cap = cv2.VideoCapture(0)
+    #cap = cv2.VideoCapture(0)
+    from config import cap
 
     while True:
         ret,frame = cap.read()
@@ -41,11 +42,11 @@ def take(user, from_):
 
         # Espai per fer foto
         if cv2.waitKey(1) == 32:
-            llista = os.listdir(config.files_path+"\\"+user)
+            llista = os.listdir(files_path+"\\"+user)
             if len(llista) == 0:
-                ruta = config.files_path+"\\"+user+"\\"+'1.jpg'
+                ruta = files_path+"\\"+user+"\\"+'1.jpg'
             else:
-                ruta = config.files_path+"\\"+user+"\\"+str(int(llista[len(llista)-1].split(".")[0])+1)+'.jpg'
+                ruta = files_path+"\\"+user+"\\"+str(int(llista[len(llista)-1].split(".")[0])+1)+'.jpg'
             cv2.imwrite(ruta, normalize_image(frame))
             img = ruta
             pixels = pyplot.imread(img)
@@ -54,6 +55,6 @@ def take(user, from_):
             reg_face(img, faces, ruta)
         if cv2.waitKey(1) == 27:
             break
-    cap.release()
+    #cap.release()
     cv2.destroyAllWindows()
     return normalize_image(frame)

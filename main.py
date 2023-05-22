@@ -1,11 +1,13 @@
-import login_screen
-import register_screen
+# Importar llibreries
 from tkinter import *
 import threading
-import login_script
+# Importar fitxers
+import login_screen
+import register_screen
+import config
 
 def main_screen():
-    hilo = threading.Thread(target=lambda: login_script.cargar()) #no execute la funcio
+    hilo = threading.Thread(target=lambda: config.cargar()) #no execute la funcio
     hilo.start()
     global screen   # Globalitzem la variable per ferla servir en altres funcions
     screen = Tk()

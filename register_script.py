@@ -1,9 +1,12 @@
+# Importar llibreries
 import cv2 
 from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
+import os
+# Importar fitxers
 import take_foto
 import config
-import os
+
 
 def sign_in(user):
     result = []
@@ -44,4 +47,3 @@ def sign_in(user):
     reg_face(img, faces)
     result.append(["FaceID Registration SUCCESSFULLY", "green"])
     return result
-    #Label(screen1, text="FaceID Registration SUCCESSFULLY", fg="green", font=("Calibri",11)).pack()

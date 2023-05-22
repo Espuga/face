@@ -1,8 +1,10 @@
+# Importar llibreries
 import cv2 
 from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
-import config
 import os
+# Importar fitxers
+import config
 
 def normalize_image(image):
     # Converitr la image a escala de grisos
@@ -30,7 +32,7 @@ def comprovar(img_log, user):
             pyplot.imshow(data[y1:y2, x1:x2])
         pyplot.show(block=False)
         pyplot.close()
-    img = config.files_path+"\\current\\"+user+"_LOG.jpg"
+    img = config.files_path+"\\current\\"+user+'_LOG.jpg'
     pixels = pyplot.imread(img)
     detector = MTCNN()
     faces = detector.detect_faces(pixels)
@@ -47,6 +49,7 @@ def comprovar(img_log, user):
             return 0
         return len(similar_regions)/len(matches)
     im_files = os.listdir(os.path.join(os.getcwd(), 'fotos'))     # Llistar els arxius de la carpeta fotos
+    mes_gran = 0
     if user in im_files:
         face_log = cv2.imread(config.files_path+"\\current\\"+user+"_LOG.jpg",0)
         for image in os.listdir(config.files_path+"\\"+user):
@@ -54,39 +57,34 @@ def comprovar(img_log, user):
             face_reg = cv2.imread(config.files_path+"\\"+user+"\\"+image.split(".")[0]+".jpg",0)
             similar = orb_sim(face_reg, face_log)
             print("Compatibility", image.split(".")[0]+": " + str(round(similar, 2)))
+            if similar > mes_gran:
+                mes_gran = similar
             if similar >= 0.9:
                 os.remove(config.files_path+"\\current\\"+user+"_LOG.jpg")
                 print("Welcome into the system")
-                result = ["Log In SUCCESFULLY\n Compatibility: "+str(round(similar*100, 2))+"%", "green", "si", "true"]
+                result = ["Log In SUCCESFULLY\n Compatibility: "+str(round(mes_gran*100, 2))+"%", "green", "si", "true"]
                 return result
         else:
             print("Bad face")
             os.remove(config.files_path+"\\current\\"+user+"_LOG.jpg")
-            result = ["Log In FAILED\n Compatibility: "+str(round(similar*100, 2))+"%", "red", "si", "false"]
+            result = ["Log In FAILED\n Compatibility: "+str(round(mes_gran*100, 2))+"%", "red", "si", "false"]
             return result
     else:
         print("User not found")
         os.remove(config.files_path+"\\current\\"+user+"_LOG.jpg")
         result = ["User not found", "red", "si", "false"]
         return result
-    
-cap = None
-
-def cargar():
-    global cap, estat
-    print("Cargant...")
-    cap = cv2.VideoCapture(0)
-    print("Cargat")
-    #Actualitzar
 
 
 
-def login(user, cargar):
-    #cap = cv2.VideoCapture(0)
-    while True:
-        ret,frame = cap.read()
-        if frame is not None and frame.shape[0] > 0 and frame.shape[1] > 0:
-            cv2.imshow('FaceID',frame)
-            cap.release()
-            cv2.destroyAllWindows()
-            return comprovar(normalize_image(frame), user)
+def login(user):
+    frame = None 
+    ret, frame = config.cap.read()
+    while frame is None: #or (frame.shape[0] <= 0 and frame.shape[1] <= 0):
+        print("a")
+        ret, frame = config.cap.read()
+    #cv2.imshow("foto", frame)
+    a =  comprovar(normalize_image(frame), user)
+    #config.cap.release()
+    cv2.destroyAllWindows()
+    return a
