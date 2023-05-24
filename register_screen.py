@@ -2,9 +2,13 @@
 from tkinter import * 
 # Importar fitxers
 from register_script import sign_in
+import config
 
+comp = False
 # Funció per retornar si registre exitos
 def register():
+    global comp
+    comp = True
     result=sign_in(user_entry.get())
     for c1 in result:
        Label(screen1, text=c1[0], fg=c1[1], font=("Calibri",11)).pack()
@@ -28,9 +32,15 @@ def execute():
 # Final acualitzar pantalla
 
 def destruir():
-    from config import cap
-    cap.release()
+    if config.cap.isOpened() and comp:
+        import threading
+        config.estat = True
+        config.cap.release()
+        fil = threading.Thread(target=lambda: config.cargar())
+        fil.start()
     screen1.destroy()
+
+
 
 def main_window():
     global user_entry, screen1, wait_label, wait_button
@@ -49,7 +59,7 @@ def main_window():
     Label(screen1, text="").pack()
     wait_label = Label(screen1, text="", font=("Calibri",11))
     wait_label.pack()
-    wait_button =  Button(screen1, text="Take Foto", width=15, height=1, command=register, state="disabled")
+    wait_button =  Button(screen1, text="Take Foto", width=15, height=1, command=register)
     wait_button.pack()
     Label(screen1, text="").pack()
     Button(screen1, text="Close", width=15, height=1, command=destruir).pack()

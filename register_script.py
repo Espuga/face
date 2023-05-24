@@ -19,10 +19,12 @@ def sign_in(user):
     else:
         os.makedirs(config.files_path+"\\"+user)
     llista = os.listdir(config.files_path+"\\"+user)
+    llista = sorted(llista, key=lambda x: int(x.split(".")[0]))
     if len(llista) == 0:
         ruta = config.files_path+"\\"+user+"\\"+'1.jpg'
     else:
         ruta = config.files_path+"\\"+user+"\\"+str(int(llista[len(llista)-1].split(".")[0])+1)+'.jpg'
+    print("ultim: " + str(llista[len(llista)-1]))
     cv2.imwrite(ruta, take_foto.take(user, "register"))
     def reg_face(img, list_results):
         data = pyplot.imread(img)

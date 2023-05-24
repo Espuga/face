@@ -3,6 +3,7 @@ import cv2
 from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
 import os
+import threading
 # Importar fitxers
 import config
 
@@ -52,7 +53,9 @@ def comprovar(img_log, user):
     mes_gran = 0
     if user in im_files:
         face_log = cv2.imread(config.files_path+"\\current\\"+user+"_LOG.jpg",0)
-        for image in os.listdir(config.files_path+"\\"+user):
+        llista = os.listdir(config.files_path+"\\"+user)
+        llista = sorted(llista, key=lambda x: int(x.split(".")[0]))
+        for image in llista:
             print("====================")
             face_reg = cv2.imread(config.files_path+"\\"+user+"\\"+image.split(".")[0]+".jpg",0)
             similar = orb_sim(face_reg, face_log)

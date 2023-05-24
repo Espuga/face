@@ -2,9 +2,13 @@
 from tkinter import *
 # Importar fitxers
 from login_script import login
+import config
 
+comp = False
 # Funcio retornar si login succcesfully o no
 def foto():
+    global comp 
+    comp = True
     result=login(user_entry2.get())
     if result[2] == "si":
         Label(screen2, text=result[0], fg=result[1], font=("Calibri",11)).pack()
@@ -28,8 +32,14 @@ def execute():
 # Final funcions per acualitzar
 
 def destruir():
-    from config import cap
-    cap.release()
+    if config.cap.isOpened() and comp:
+        print("Esta oberta")
+        import threading
+        config.cap.release()
+        fil = threading.Thread(target=lambda: config.cargar())
+        fil.start()
+    else:
+        print("No esta oberta")
     screen2.destroy()
 
 def main_window():
@@ -48,7 +58,7 @@ def main_window():
     Label(screen2, text="").pack()
     wait_label = Label(screen2, text="", font=("Calibri",11))
     wait_label.pack()
-    wait_button = Button(screen2, text="Take Foto", width=20, height=1, command=foto, state="disabled")
+    wait_button = Button(screen2, text="Take Foto", width=20, height=1, command=foto)
     wait_button.pack()
     Label(screen2, text="").pack()
     Button(screen2, text="Close", width=20, height=1, command=destruir).pack()

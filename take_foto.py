@@ -43,6 +43,7 @@ def take(user, from_):
         # Espai per fer foto
         if cv2.waitKey(1) == 32:
             llista = os.listdir(files_path+"\\"+user)
+            llista = sorted(llista, key=lambda x: int(x.split(".")[0]))
             if len(llista) == 0:
                 ruta = files_path+"\\"+user+"\\"+'1.jpg'
             else:

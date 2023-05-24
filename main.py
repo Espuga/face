@@ -6,6 +6,10 @@ import login_screen
 import register_screen
 import config
 
+def destruir():
+    config.cap.release()
+    screen.destroy()
+
 def main_screen():
     hilo = threading.Thread(target=lambda: config.cargar()) #no execute la funcio
     hilo.start()
@@ -20,7 +24,7 @@ def main_screen():
     Label(text="").pack()   # Espai entre botons
     Button(text="Sign In", height="2", width="30", command=register_screen.main_window).pack()   # Registrar-se
     Label(text="").pack()
-    Button(text="Close", height="2", width="30", command=lambda: screen.destroy()).pack()
+    Button(text="Close", height="2", width="30", command=destruir).pack()
 
     screen.mainloop()
 
