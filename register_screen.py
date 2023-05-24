@@ -31,14 +31,14 @@ def execute():
         screen1.after(1000, execute)
 # Final acualitzar pantalla
 
-def destruir():
+""" def destruir():
     if config.cap.isOpened() and comp:
         import threading
         config.estat = True
         config.cap.release()
         fil = threading.Thread(target=lambda: config.cargar())
         fil.start()
-    screen1.destroy()
+    screen1.destroy() """
 
 
 
@@ -62,7 +62,14 @@ def main_window():
     wait_button =  Button(screen1, text="Take Foto", width=15, height=1, command=register)
     wait_button.pack()
     Label(screen1, text="").pack()
-    Button(screen1, text="Close", width=15, height=1, command=destruir).pack()
+    Button(screen1, text="Close", width=15, height=1, command=lambda: screen1.destroy()).pack()
+    """ from config import estat
+    if estat:
+        wait_label.config(text="Wait to take the picture...", fg='orange')
+        execute()
+    else:
+        wait_label.config(text="You can take the foto", fg='green')
+        wait_button.config(state="active") """
     # Funcio per acualitzar quan la camera estigui carregada
     execute()
     screen1.mainloop()

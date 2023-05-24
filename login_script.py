@@ -16,7 +16,7 @@ def normalize_image(image):
     normalized = cv2.cvtColor(normalized, cv2.COLOR_GRAY2BGR)
     return normalized
 def comprovar(img_log, user):
-    cv2.imwrite(config.files_path+"\\current\\"+user+'_LOG.jpg', img_log)
+    cv2.imwrite(config.files_path+"\\"+user+'_LOG.jpg', img_log)
     def reg_face(img, list_results):
         data = pyplot.imread(img)
         for i in range(len(list_results)):
@@ -28,12 +28,12 @@ def comprovar(img_log, user):
             pyplot.axis('off')
             face_reg = data[y1:y2, x1:x2]
             face_reg = cv2.resize(face_reg, (150,200), interpolation=cv2.INTER_CUBIC)   # Guardar la imatge 
-            cv2.imwrite(config.files_path+"\\current\\"+user+'_LOG.jpg', face_reg)
+            cv2.imwrite(config.files_path+"\\"+user+'_LOG.jpg', face_reg)
             #Plotejem les cares
             pyplot.imshow(data[y1:y2, x1:x2])
         pyplot.show(block=False)
         pyplot.close()
-    img = config.files_path+"\\current\\"+user+'_LOG.jpg'
+    img = config.files_path+"\\"+user+'_LOG.jpg'
     pixels = pyplot.imread(img)
     detector = MTCNN()
     faces = detector.detect_faces(pixels)
@@ -52,7 +52,7 @@ def comprovar(img_log, user):
     im_files = os.listdir(os.path.join(os.getcwd(), 'fotos'))     # Llistar els arxius de la carpeta fotos
     mes_gran = 0
     if user in im_files:
-        face_log = cv2.imread(config.files_path+"\\current\\"+user+"_LOG.jpg",0)
+        face_log = cv2.imread(config.files_path+"\\"+user+"_LOG.jpg",0)
         llista = os.listdir(config.files_path+"\\"+user)
         llista = sorted(llista, key=lambda x: int(x.split(".")[0]))
         for image in llista:
@@ -63,18 +63,18 @@ def comprovar(img_log, user):
             if similar > mes_gran:
                 mes_gran = similar
             if similar >= 0.9:
-                os.remove(config.files_path+"\\current\\"+user+"_LOG.jpg")
+                os.remove(config.files_path+"\\"+user+"_LOG.jpg")
                 print("Welcome into the system")
                 result = ["Log In SUCCESFULLY\n Compatibility: "+str(round(mes_gran*100, 2))+"%", "green", "si", "true"]
                 return result
         else:
             print("Bad face")
-            os.remove(config.files_path+"\\current\\"+user+"_LOG.jpg")
+            os.remove(config.files_path+"\\"+user+"_LOG.jpg")
             result = ["Log In FAILED\n Compatibility: "+str(round(mes_gran*100, 2))+"%", "red", "si", "false"]
             return result
     else:
         print("User not found")
-        os.remove(config.files_path+"\\current\\"+user+"_LOG.jpg")
+        os.remove(config.files_path+"\\"+user+"_LOG.jpg")
         result = ["User not found", "red", "si", "false"]
         return result
 

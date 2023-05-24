@@ -31,16 +31,14 @@ def execute():
         screen2.after(1000, execute)
 # Final funcions per acualitzar
 
-def destruir():
+""" def destruir():
     if config.cap.isOpened() and comp:
         print("Esta oberta")
         import threading
         config.cap.release()
         fil = threading.Thread(target=lambda: config.cargar())
         fil.start()
-    else:
-        print("No esta oberta")
-    screen2.destroy()
+    screen2.destroy() """
 
 def main_window():
     global screen2, user_entry2, wait_label, wait_button
@@ -61,8 +59,15 @@ def main_window():
     wait_button = Button(screen2, text="Take Foto", width=20, height=1, command=foto)
     wait_button.pack()
     Label(screen2, text="").pack()
-    Button(screen2, text="Close", width=20, height=1, command=destruir).pack()
+    Button(screen2, text="Close", width=20, height=1, command=lambda: screen2.destroy()).pack()
     Label(screen2, text="").pack()
+    """ from config import estat
+    if estat:
+        wait_label.config(text="Wait to take the picture...", fg='orange')
+        execute()
+    else:
+        wait_label.config(text="You can take the foto", fg='green')
+        wait_button.config(state="active") """
     # Acualitzar pagina per quan es carregui la camera
     execute()
     screen2.mainloop()
